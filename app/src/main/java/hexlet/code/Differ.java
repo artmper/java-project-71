@@ -43,7 +43,7 @@ public class Differ {
             } else if (file1.containsKey(key)) {
                 if (file1.get(key).equals(value)) {
                     diff.append("    ").append(key).append(": ")
-                            .append(key)
+                            .append(value)
                             .append("\n");
                 } else {
                     diff.append("  ").append("- ").append(key).append(": ")
