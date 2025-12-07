@@ -21,7 +21,7 @@ public class Differ {
 
         String json = Files.readString(path);
 
-        return objectMapper.readValue(json, new TypeReference<Map<String, Object>>(){});
+        return objectMapper.readValue(json, new TypeReference<Map<String, Object>>() { });
     }
 
     public static String generate(Map<String, Object> file1, Map<String, Object> file2) {
