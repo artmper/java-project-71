@@ -14,5 +14,4 @@ jobs:
           java-version: 25
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
-      #- run: make test
-      - run: make lint
+      - run: make build
