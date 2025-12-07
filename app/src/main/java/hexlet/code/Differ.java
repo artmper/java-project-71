@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Differ {
@@ -22,43 +23,39 @@ public class Differ {
 
         return objectMapper.readValue(json, new TypeReference<Map<String, Object>>(){});
     }
-    
+
     public static String generate(Map<String, Object> file1, Map<String, Object> file2) {
-        Map<String, Object> sortedFile1 = Utils.sort(file1);
-        Map<String, Object> sortedFile2 = Utils.sort(file2);
+        Map<String, Object> mergedMap = new HashMap<>(file1);
+        mergedMap.putAll(file2);
+        Map<String, Object> sortedMap = Utils.sort(mergedMap);
 
         StringBuilder diff = new StringBuilder();
         diff.append("{\n");
 
-        for (var entry : sortedFile1.entrySet()) {
-            String firstFileKey = entry.getKey();
-            String firstFileValue = entry.getValue().toString();
+        for (var entry : sortedMap.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue().toString();
 
-            if (sortedFile2.containsKey(firstFileKey)) {
-                if (sortedFile2.get(firstFileKey).equals(firstFileValue)) {
-                    diff.append("    ").append(firstFileKey).append(": ")
-                            .append(firstFileValue)
+            if (!file2.containsKey(key)) {
+                diff.append("  ").append("- ").append(key).append(": ")
+                        .append(value)
+                        .append("\n");
+            } else if (file1.containsKey(key)) {
+                if (file1.get(key).equals(value)) {
+                    diff.append("    ").append(key).append(": ")
+                            .append(key)
                             .append("\n");
                 } else {
-                    diff.append("  ").append("- ").append(firstFileKey).append(": ")
-                            .append(firstFileValue)
+                    diff.append("  ").append("- ").append(key).append(": ")
+                            .append(file1.get(key))
                             .append("\n");
-                    diff.append("  ").append("+ ").append(firstFileKey).append(": ")
-                            .append(sortedFile2.get(firstFileKey))
+                    diff.append("  ").append("+ ").append(key).append(": ")
+                            .append(value)
                             .append("\n");
                 }
-                sortedFile2.remove(firstFileKey);
             } else {
-                diff.append("  ").append("- ").append(firstFileKey).append(": ")
-                        .append(firstFileValue)
-                        .append("\n");
-            }
-        }
-
-        if (!sortedFile2.isEmpty()) {
-            for (var entry : sortedFile2.entrySet()) {
-                diff.append("  ").append("+ ").append(entry.getKey()).append(": ")
-                        .append(entry.getValue())
+                diff.append("  ").append("+ ").append(key).append(": ")
+                        .append(value)
                         .append("\n");
             }
         }
