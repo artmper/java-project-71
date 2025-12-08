@@ -1,0 +1,7 @@
+[versions]
+picocli = "4.7.7"
+jackson-databind = "2.20.1"
+
+[libraries]
+picocli = { group = "info.picocli", name = "picocli", version.ref = "picocli" }
+jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson-databind" }
