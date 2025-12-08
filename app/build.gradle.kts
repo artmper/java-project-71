@@ -1,7 +1,7 @@
 plugins {
     id("se.patrikerdes.use-latest-versions") version "0.2.19"
     id("com.github.ben-manes.versions") version "0.53.0"
-    id("org.sonarqube") version "7.0.1.6134"
+    id("org.sonarqube") version "7.1.0.6387"
     application
     checkstyle
     jacoco
@@ -34,3 +34,10 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
 }
 tasks.jacocoTestReport { reports { xml.required.set(true) } }
+
+sonar {
+    properties {
+        property("sonar.projectKey", "artmper_java-project-71")
+        property("sonar.organization", "artmper")
+    }
+}
