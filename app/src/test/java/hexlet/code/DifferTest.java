@@ -1,5 +1,5 @@
-import hexlet.code.Differ;
-import hexlet.code.Utils;
+package hexlet.code;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -53,23 +53,25 @@ public class DifferTest {
     public void testGenerate() {
         String actual1 = Differ.generate(json1, json2);
         String actual2 = Differ.generate(json1, json3);
-        String expected1 = "{\n"
-                + "  - follow: false\n"
-                + "    host: hexlet.io\n"
-                + "  - proxy: 123.234.53.22\n"
-                + "  - timeout: 50\n"
-                + "  + timeout: 20\n"
-                + "  + verbose: true\n"
-                + "}";
-        String expected2 = "{\n"
-                + "  + author: Artem\n"
-                + "  - follow: false\n"
-                + "    host: hexlet.io\n"
-                + "  - proxy: 123.234.53.22\n"
-                + "  - timeout: 50\n"
-                + "  + timeout: 20\n"
-                + "  + verbose: true\n"
-                + "}";
+        String expected1 = """
+                    {
+                      - follow: false
+                        host: hexlet.io
+                      - proxy: 123.234.53.22
+                      - timeout: 50
+                      + timeout: 20
+                      + verbose: true
+                    }""";
+        String expected2 = """
+                    {
+                      + author: Artem
+                      - follow: false
+                        host: hexlet.io
+                      - proxy: 123.234.53.22
+                      - timeout: 50
+                      + timeout: 20
+                      + verbose: true
+                    }""";
         assertEquals(expected1, actual1);
         assertEquals(expected2, actual2);
     }
