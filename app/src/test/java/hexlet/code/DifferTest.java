@@ -10,7 +10,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class DifferTest {
+class DifferTest {
 
     private static Map<String, Object> json1;
     private static Map<String, Object> json2;
@@ -21,7 +21,7 @@ public class DifferTest {
                 .toAbsolutePath().normalize();
     }
     @BeforeAll
-    public static void beforeAll() {
+    static void beforeAll() {
         json1 = Map.of("host", "hexlet.io",
                 "timeout", 50,
                 "proxy", "123.234.53.22",
@@ -38,7 +38,7 @@ public class DifferTest {
 
     }
     @Test
-    public void testGetData() throws Exception {
+    void testGetData() throws Exception {
         Path jsonPath1 = getFixturePath("file1.json");
         Path jsonPath2 = getFixturePath("file2.json");
         Path jsonPath3 = getFixturePath("file99.json");
@@ -50,7 +50,7 @@ public class DifferTest {
     }
 
     @Test
-    public void testGenerate() {
+    void testGenerate() {
         String actual1 = Differ.generate(json1, json2);
         String actual2 = Differ.generate(json1, json3);
         String expected1 = """
@@ -77,7 +77,7 @@ public class DifferTest {
     }
 
     @Test
-    public void testUtils() {
+    void testUtils() {
         Map<String, Object> actual1 = Utils.sort(json1);
         Map<String, Object> actual2 = Utils.sort(json3);
 
