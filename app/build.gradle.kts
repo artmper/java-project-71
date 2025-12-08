@@ -41,3 +41,4 @@ sonar {
         property("sonar.organization", "artmper")
     }
 }
+
