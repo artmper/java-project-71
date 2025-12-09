@@ -8,7 +8,6 @@ import picocli.CommandLine.Option;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import static hexlet.code.Differ.getData;
 
 @Command(name = "gendiff", mixinStandardHelpOptions = true, version = "App v1.0",
          description = "Compares two configuration files and shows a difference.")
@@ -27,8 +26,8 @@ public class App implements Callable<Integer> {
     @Override
     public Integer call() {
         try {
-            Map<String, Object> firstFileData = getData(filepath1);
-            Map<String, Object> secondFileData = getData(filepath2);
+            Map<String, Object> firstFileData = Parser.getData(filepath1);
+            Map<String, Object> secondFileData = Parser.getData(filepath2);
             System.out.println(Differ.generate(firstFileData, secondFileData));
         } catch (Exception e) {
             throw new RuntimeException(e);

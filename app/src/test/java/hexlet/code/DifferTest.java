@@ -12,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DifferTest {
 
-    private static Map<String, Object> json1;
-    private static Map<String, Object> json2;
-    private static Map<String, Object> json3;
+    private static Map<String, Object> map1;
+    private static Map<String, Object> map2;
+    private static Map<String, Object> map3;
 
     private static Path getFixturePath(String fileName) {
         return Paths.get("src", "test", "resources", "fixtures", fileName)
@@ -22,15 +22,15 @@ class DifferTest {
     }
     @BeforeAll
     static void beforeAll() {
-        json1 = Map.of("host", "hexlet.io",
+        map1 = Map.of("host", "hexlet.io",
                 "timeout", 50,
                 "proxy", "123.234.53.22",
                 "follow", false);
-        json2 = Map.of(
+        map2 = Map.of(
                 "timeout", 20,
                 "verbose", true,
                 "host", "hexlet.io");
-        json3 = Map.of(
+        map3 = Map.of(
                 "timeout", 20,
                 "verbose", true,
                 "host", "hexlet.io",
@@ -42,17 +42,24 @@ class DifferTest {
         Path jsonPath1 = getFixturePath("file1.json");
         Path jsonPath2 = getFixturePath("file2.json");
         Path jsonPath3 = getFixturePath("file99.json");
-        Map<String, Object> actual1 = Differ.getData(String.valueOf(jsonPath1));
-        Map<String, Object> actual2 = Differ.getData(String.valueOf(jsonPath2));
-        assertEquals(json1, actual1);
-        assertEquals(json2, actual2);
-        assertThrows(Exception.class, () -> Differ.getData(String.valueOf(jsonPath3)));
+        Path yamlPath1 = getFixturePath("file1.yaml");
+        Path yamlPath2 = getFixturePath("file2.yaml");
+
+        Map<String, Object> actual1 = Parser.getData(String.valueOf(jsonPath1));
+        Map<String, Object> actual2 = Parser.getData(String.valueOf(jsonPath2));
+        Map<String, Object> actual3 = Parser.getData(String.valueOf(yamlPath1));
+        Map<String, Object> actual4 = Parser.getData(String.valueOf(yamlPath2));
+        assertEquals(map1, actual1);
+        assertEquals(map2, actual2);
+        assertEquals(map1, actual3);
+        assertEquals(map2, actual4);
+        assertThrows(Exception.class, () -> Parser.getData(String.valueOf(jsonPath3)));
     }
 
     @Test
     void testGenerate() {
-        String actual1 = Differ.generate(json1, json2);
-        String actual2 = Differ.generate(json1, json3);
+        String actual1 = Differ.generate(map1, map2);
+        String actual2 = Differ.generate(map1, map3);
         String expected1 = """
                     {
                       - follow: false
@@ -78,8 +85,8 @@ class DifferTest {
 
     @Test
     void testUtils() {
-        Map<String, Object> actual1 = Utils.sort(json1);
-        Map<String, Object> actual2 = Utils.sort(json3);
+        Map<String, Object> actual1 = Utils.sort(map1);
+        Map<String, Object> actual2 = Utils.sort(map3);
 
         var expected1 = Map.of("follow", false,
                 "host", "hexlet.io",
