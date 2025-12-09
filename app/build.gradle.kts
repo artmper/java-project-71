@@ -40,6 +40,7 @@ sonar {
     properties {
         property("sonar.projectKey", "artmper_java-project-71")
         property("sonar.organization", "artmper")
+        property("sonar.host.url", "https://sonarcloud.io")
     }
 }
 
