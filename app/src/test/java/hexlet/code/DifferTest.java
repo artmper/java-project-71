@@ -1,7 +1,6 @@
 package hexlet.code;
 
 import org.junit.jupiter.api.Test;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -9,13 +8,11 @@ class DifferTest {
 
     @Test
     void testGenerate() throws Exception {
-        var map1 = Parser.getData("src/test/resources/fixtures/file1.json");
-        var map2 = Parser.getData("src/test/resources/fixtures/file2.json");
-        var map3 = Parser.getData("src/test/resources/fixtures/file1.yaml");
-        var map4 = Parser.getData("src/test/resources/fixtures/file2.yaml");
+        String actual1 = Differ.generate("src/test/resources/fixtures/file1.json",
+                "src/test/resources/fixtures/file2.json");
+        String actual2 = Differ.generate("src/test/resources/fixtures/file1.yaml",
+                "src/test/resources/fixtures/file2.yaml");
 
-        String actual1 = Differ.generate(map1, map2);
-        String actual2 = Differ.generate(map3, map4);
         String expected = """
                 {
                     chars1: [a, b, c]

@@ -5,7 +5,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Option;
 
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 
@@ -25,13 +24,8 @@ public class App implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        try {
-            Map<String, Object> firstFileData = Parser.getData(filepath1);
-            Map<String, Object> secondFileData = Parser.getData(filepath2);
-            System.out.println(Differ.generate(firstFileData, secondFileData));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println(Differ.generate(filepath1, filepath2));
+
         return 0;
     }
 
