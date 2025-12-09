@@ -15,20 +15,21 @@ public class Differ {
 
         for (var entry : sortedMap.entrySet()) {
             String key = entry.getKey();
-            String value = entry.getValue().toString();
+            String value = entry.getValue() == null ? "null" : entry.getValue().toString();
+            String firstFileValue = file1.get(key) == null ? "null" : file1.get(key).toString();
 
             if (!file2.containsKey(key)) {
                 diff.append("  ").append("- ").append(key).append(": ")
                         .append(value)
                         .append("\n");
             } else if (file1.containsKey(key)) {
-                if (file1.get(key).equals(value)) {
+                if (firstFileValue.equals(value)) {
                     diff.append("    ").append(key).append(": ")
                             .append(value)
                             .append("\n");
                 } else {
                     diff.append("  ").append("- ").append(key).append(": ")
-                            .append(file1.get(key))
+                            .append(firstFileValue)
                             .append("\n");
                     diff.append("  ").append("+ ").append(key).append(": ")
                             .append(value)

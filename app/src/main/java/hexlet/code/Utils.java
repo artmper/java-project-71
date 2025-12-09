@@ -6,14 +6,10 @@ import java.util.stream.Collectors;
 
 public class Utils {
     public static Map<String, Object> sort(Map<String, Object> map) {
-        return map.entrySet()
-                .stream()
+        Map<String, Object> sortedMap = new LinkedHashMap<>();
+        map.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (e1, e2) -> e1,
-                        LinkedHashMap::new
-                ));
+                .forEachOrdered(entry -> sortedMap.put(entry.getKey(), entry.getValue()));
+        return sortedMap;
     }
 }
