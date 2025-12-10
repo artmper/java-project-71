@@ -11,4 +11,14 @@ public class Utils {
                 .forEachOrdered(entry -> sortedMap.put(entry.getKey(), entry.getValue()));
         return sortedMap;
     }
+
+    public static boolean isPrimitive(Object value) {
+        if (value == null) {
+            return false;
+        }
+
+        return value instanceof Number
+                || value instanceof Boolean
+                || value instanceof Character;
+    }
 }

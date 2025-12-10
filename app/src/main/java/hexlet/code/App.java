@@ -24,8 +24,12 @@ public class App implements Callable<Integer> {
     private String format;
 
     @Override
-    public Integer call() throws IOException {
-        System.out.println(Differ.generate(filepath1, filepath2));
+    public Integer call() {
+        try {
+            System.out.println(Differ.generate(filepath1, filepath2, format));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return 0;
     }

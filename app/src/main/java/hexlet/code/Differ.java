@@ -1,14 +1,27 @@
 package hexlet.code;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Differ {
 
-    public static String generate(String filepath1, String filepath2) throws IOException {
+    public static String generate(String filepath1, String filepath2, String formatName) throws IOException {
+        Map<String, List<Object>> diff = makeDiff(filepath1, filepath2);
+        try {
+            return Formatter.formateDiff(diff, formatName);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Map<String, List<Object>> makeDiff(String filepath1, String filepath2) throws IOException {
         Map<String, Object> firstFileData;
         Map<String, Object> secondFileData;
+
         try {
             firstFileData = Parser.getData(filepath1);
             secondFileData = Parser.getData(filepath2);
@@ -19,40 +32,31 @@ public class Differ {
         Map<String, Object> mergedMap = new HashMap<>(firstFileData);
         mergedMap.putAll(secondFileData);
         Map<String, Object> sortedMap = Utils.sort(mergedMap);
-
-        StringBuilder diff = new StringBuilder();
-        diff.append("{\n");
+        Map<String, List<Object>> diff = new LinkedHashMap<>();
 
         for (var entry : sortedMap.entrySet()) {
             String key = entry.getKey();
-            String value = entry.getValue() == null ? "null" : entry.getValue().toString();
-            String firstFileValue = firstFileData.get(key) == null ? "null" : firstFileData.get(key).toString();
+            Object value = entry.getValue() == null ? "null" : entry.getValue();
+            Object firstFileValue = firstFileData.get(key) == null ? "null" : firstFileData.get(key);
+            List<Object> diffInfo = new ArrayList<>();
 
             if (!secondFileData.containsKey(key)) {
-                diff.append("  ").append("- ").append(key).append(": ")
-                        .append(value)
-                        .append("\n");
+                diffInfo.addAll(List.of("removed", value));
+                diff.put(key, diffInfo);
             } else if (firstFileData.containsKey(key)) {
                 if (firstFileValue.equals(value)) {
-                    diff.append("    ").append(key).append(": ")
-                            .append(value)
-                            .append("\n");
+                    diffInfo.addAll(List.of("unchanged", value));
+                    diff.put(key, diffInfo);
                 } else {
-                    diff.append("  ").append("- ").append(key).append(": ")
-                            .append(firstFileValue)
-                            .append("\n");
-                    diff.append("  ").append("+ ").append(key).append(": ")
-                            .append(value)
-                            .append("\n");
+                    diffInfo.addAll(List.of("updated", firstFileValue, value));
+                    diff.put(key, diffInfo);
                 }
             } else {
-                diff.append("  ").append("+ ").append(key).append(": ")
-                        .append(value)
-                        .append("\n");
+                diffInfo.addAll(List.of("added", value));
+                diff.put(key, diffInfo);
             }
         }
-        diff.append("}");
 
-        return diff.toString();
+        return diff;
     }
 }
