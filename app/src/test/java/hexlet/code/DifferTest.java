@@ -2,12 +2,14 @@ package hexlet.code;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DifferTest {
 
     @Test
-    void testGenerate() throws Exception {
+    void testGenerate() throws IOException {
         String actual1 = Differ.generate("src/test/resources/fixtures/file1.json",
                 "src/test/resources/fixtures/file2.json");
         String actual2 = Differ.generate("src/test/resources/fixtures/file1.yaml",

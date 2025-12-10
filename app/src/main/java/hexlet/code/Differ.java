@@ -1,18 +1,19 @@
 package hexlet.code;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Differ {
 
-    public static String generate(String filepath1, String filepath2) {
+    public static String generate(String filepath1, String filepath2) throws IOException {
         Map<String, Object> firstFileData;
         Map<String, Object> secondFileData;
         try {
             firstFileData = Parser.getData(filepath1);
             secondFileData = Parser.getData(filepath2);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new IOException(e);
         }
 
         Map<String, Object> mergedMap = new HashMap<>(firstFileData);
