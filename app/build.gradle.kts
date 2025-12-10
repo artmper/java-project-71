@@ -30,11 +30,14 @@ dependencies {
     implementation(libs.picocli)
     implementation(libs.jackson.databind)
 }
-
-tasks.named<Test>("test") {
-    useJUnitPlatform()
-}
 tasks.jacocoTestReport { reports { xml.required.set(true) } }
+
+tasks.test {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+
+}
+
 
 sonar {
     properties {
