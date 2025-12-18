@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.formatters.Json;
 import hexlet.code.formatters.Stylish;
 import hexlet.code.formatters.Plain;
 
@@ -8,17 +9,13 @@ import java.util.Map;
 
 public class Formatter {
     public static String formateDiff(Map<String, List<Object>> diff, String format) throws Exception {
-        String formattedDiff;
 
-        if (format.equals("stylish")) {
-            formattedDiff = Stylish.formate(diff);
-        } else if (format.equals("plain")) {
-            formattedDiff = Plain.formate(diff);
-        } else {
-            throw new Exception("Unknown format type.");
-        }
-
-        return formattedDiff;
+        return switch (format) {
+            case "stylish" -> Stylish.formate(diff);
+            case "plain" -> Plain.formate(diff);
+            case "json" -> Json.formate(diff);
+            default -> throw new Exception("Unknown format type.");
+        };
     }
 }
 

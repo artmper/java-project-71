@@ -5,7 +5,6 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.Option;
 
-import java.io.IOException;
 import java.util.concurrent.Callable;
 
 
@@ -27,7 +26,7 @@ public class App implements Callable<Integer> {
     public Integer call() {
         try {
             System.out.println(Differ.generate(filepath1, filepath2, format));
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 

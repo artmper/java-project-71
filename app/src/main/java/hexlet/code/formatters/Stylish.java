@@ -10,26 +10,28 @@ public class Stylish {
 
         for (var entry : diff.entrySet()) {
             String key = entry.getKey();
-            List<Object> value = entry.getValue();
+            List<Object> diffInfo = entry.getValue();
+            String oldValue = diffInfo.get(1) == null ? "null" : diffInfo.get(1).toString();
 
-            if (value.getFirst().equals("removed")) {
+            if (diffInfo.getFirst().equals("removed")) {
                 diffResult.append("  ").append("- ").append(key).append(": ")
-                        .append(value.get(1).toString())
+                        .append(oldValue)
                         .append("\n");
-            } else if (value.getFirst().equals("unchanged")) {
+            } else if (diffInfo.getFirst().equals("unchanged")) {
                 diffResult.append("    ").append(key).append(": ")
-                        .append(value.get(1).toString())
+                        .append(oldValue)
                         .append("\n");
-            } else  if (value.getFirst().equals("updated")) {
+            } else  if (diffInfo.getFirst().equals("updated")) {
+                String newValue = diffInfo.get(2) == null ? "null" : diffInfo.get(2).toString();
                 diffResult.append("  ").append("- ").append(key).append(": ")
-                        .append(value.get(1).toString())
+                        .append(oldValue)
                         .append("\n");
                 diffResult.append("  ").append("+ ").append(key).append(": ")
-                        .append(value.get(2).toString())
+                        .append(newValue)
                         .append("\n");
             } else {
                 diffResult.append("  ").append("+ ").append(key).append(": ")
-                        .append(value.get(1).toString())
+                        .append(oldValue)
                         .append("\n");
             }
         }

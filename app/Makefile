@@ -16,7 +16,7 @@ run-dist:
 	@./build/install/app/bin/app -h
 
 run:
-	@./build/install/app/bin/app $(f1) $(f2)
+	@./build/install/app/bin/app $(f) $(f1) $(f2)
 
 test:
 	./gradlew test

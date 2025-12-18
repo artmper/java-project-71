@@ -1,19 +1,39 @@
 package hexlet.code;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DifferTest {
+    private static String pathToJson1;
+    private static String pathToJson2;
+    private static String pathToYaml1;
+    private static String pathToYaml2;
+    private static Path pathToDiff;
+
+    @BeforeAll
+    public static void beforeAll() {
+        pathToJson1 = getFixturePath("file1.json").toString();
+        pathToJson2 = getFixturePath("file2.json").toString();
+        pathToYaml1 = getFixturePath("file1.yaml").toString();
+        pathToYaml2 = getFixturePath("file2.yaml").toString();
+        pathToDiff = getFixturePath("diff1-2.json");
+    }
+
+    private static Path getFixturePath(String fileName) {
+        return Paths.get("src", "test", "resources", "fixtures", fileName)
+                .toAbsolutePath().normalize();
+    }
 
     @Test
-    void testGenerateStylish() throws IOException {
-        String actual1 = Differ.generate("src/test/resources/fixtures/file1.json",
-                "src/test/resources/fixtures/file2.json", "stylish");
-        String actual2 = Differ.generate("src/test/resources/fixtures/file1.yaml",
-                "src/test/resources/fixtures/file2.yaml", "stylish");
+    void testGenerateStylish() throws Exception {
+        String actual1 = Differ.generate(pathToJson1, pathToJson2, "stylish");
+        String actual2 = Differ.generate(pathToYaml1, pathToYaml2, "stylish");
 
         String expected = """
                 {
@@ -46,11 +66,9 @@ class DifferTest {
     }
 
     @Test
-    void testGeneratePlain() throws IOException {
-        String actual1 = Differ.generate("src/test/resources/fixtures/file1.json",
-                "src/test/resources/fixtures/file2.json", "plain");
-        String actual2 = Differ.generate("src/test/resources/fixtures/file1.yaml",
-                "src/test/resources/fixtures/file2.yaml", "plain");
+    void testGeneratePlain() throws Exception {
+        String actual1 = Differ.generate(pathToJson1, pathToJson2, "plain");
+        String actual2 = Differ.generate(pathToYaml1, pathToYaml2, "plain");
 
         String expected = """
                 Property 'chars2' was updated. From [complex value] to false
@@ -70,4 +88,13 @@ class DifferTest {
         assertEquals(expected, actual2);
     }
 
+    @Test
+    void testGenerateJson() throws Exception {
+        String actual1 = Differ.generate(pathToJson1, pathToJson2, "json");
+        String actual2 = Differ.generate(pathToYaml1, pathToYaml2, "json");
+
+        String expected = Files.readString(pathToDiff).trim();
+        assertEquals(expected, actual1);
+        assertEquals(expected, actual2);
+    }
 }

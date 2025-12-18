@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class UtilsTest {
 
@@ -23,15 +21,17 @@ class UtilsTest {
     }
 
     @Test
-    void testUtilsIsPrimitive() {
-        boolean actual1 = Utils.isPrimitive(12);
-        boolean actual2 = Utils.isPrimitive(List.of(1, 2, 3));
-        boolean actual3 = Utils.isPrimitive(true);
-        boolean actual4 = Utils.isPrimitive('c');
+    void testUtilsStringify() {
+        String actual1 = Utils.stringify(12);
+        String actual2 = Utils.stringify(List.of(1, 2, 3));
+        String actual3 = Utils.stringify(true);
+        String actual4 = Utils.stringify('c');
+        String actual5 = Utils.stringify(null);
 
-        assertTrue(actual1);
-        assertFalse(actual2);
-        assertTrue(actual3);
-        assertTrue(actual4);
+        assertEquals("12", actual1);
+        assertEquals("[complex value]", actual2);
+        assertEquals("true", actual3);
+        assertEquals("c", actual4);
+        assertEquals("null", actual5);
     }
 }

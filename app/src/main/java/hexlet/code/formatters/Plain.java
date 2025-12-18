@@ -10,36 +10,9 @@ public class Plain {
         StringBuilder diffResult = new StringBuilder();
 
         for (var entry : diff.entrySet()) {
-            String key = entry.getKey();
             List<Object> diffInfo = entry.getValue();
-            String oldValue;
-            String newValue = "";
-
-            if (Utils.isPrimitive(diffInfo.get(1))) {
-                oldValue = diffInfo.get(1).toString();
-            } else if (diffInfo.get(1) instanceof String) {
-                if (diffInfo.get(1).equals("null")) {
-                    oldValue = "null";
-                } else {
-                    oldValue = "'" + diffInfo.get(1) + "'";
-                }
-            } else {
-                oldValue = "[complex value]";
-            }
-
-            if (diffInfo.size() > 2) {
-                if (Utils.isPrimitive(diffInfo.get(2))) {
-                    newValue = diffInfo.get(2).toString();
-                } else if (diffInfo.get(2) instanceof String) {
-                    if (diffInfo.get(2).equals("null")) {
-                        newValue = "null";
-                    } else {
-                        newValue = "'" + diffInfo.get(2) + "'";
-                    }
-                } else {
-                    newValue = "[complex value]";
-                }
-            }
+            String key = entry.getKey();
+            String oldValue = Utils.stringify(diffInfo.get(1));
 
             if (diffInfo.getFirst().equals("removed")) {
                 diffResult.append("Property ").append("'").append(key).append("'")
@@ -47,6 +20,7 @@ public class Plain {
                         .append(diffInfo.getFirst())
                         .append("\n");
             } else  if (diffInfo.getFirst().equals("updated")) {
+                String newValue = Utils.stringify(diffInfo.get(2));
                 diffResult.append("Property ").append("'").append(key).append("'")
                         .append(" was ")
                         .append(diffInfo.getFirst())

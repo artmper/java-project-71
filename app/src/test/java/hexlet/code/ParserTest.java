@@ -21,6 +21,7 @@ class ParserTest {
         return Paths.get("src", "test", "resources", "fixtures", fileName)
                 .toAbsolutePath().normalize();
     }
+
     @BeforeAll
     static void beforeAll() {
         MAP1.put("setting1", "Some value");
