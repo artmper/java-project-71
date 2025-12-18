@@ -22,8 +22,8 @@ class UtilsTest {
 
     @Test
     void testUtilsStringify() {
-        String actual1 = Utils.stringify(12);
-        String actual2 = Utils.stringify(List.of(1, 2, 3));
+        String actual1 = Utils.stringify(1);
+        String actual2 = Utils.stringify(List.of(1, 2));
         String actual3 = Utils.stringify(true);
         String actual4 = Utils.stringify('c');
         String actual5 = Utils.stringify(null);
