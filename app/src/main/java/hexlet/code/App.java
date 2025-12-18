@@ -25,7 +25,11 @@ public class App implements Callable<Integer> {
     @Override
     public Integer call() {
         try {
-            System.out.println(Differ.generate(filepath1, filepath2, format));
+            if (!format.equals("stylish")) {
+                System.out.println(Differ.generate(filepath1, filepath2, format));
+            } else {
+                System.out.println(Differ.generate(filepath1, filepath2));
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -16,6 +16,13 @@ public class Differ {
 
     }
 
+    public static String generate(String filepath1, String filepath2) throws Exception {
+        Map<String, List<Object>> diff = makeDiff(filepath1, filepath2);
+
+        return Formatter.formateDiff(diff, "stylish");
+
+    }
+
     public static Map<String, List<Object>> makeDiff(String filepath1, String filepath2) throws IOException {
         Map<String, Object> firstFileData = Parser.getData(filepath1);
         Map<String, Object> secondFileData = Parser.getData(filepath2);
