@@ -8,6 +8,7 @@ import java.util.Map;
 public class Plain {
     public static String formate(Map<String, List<Object>> diff) {
         StringBuilder diffResult = new StringBuilder();
+        String property = "Property ";
 
         for (var entry : diff.entrySet()) {
             List<Object> diffInfo = entry.getValue();
@@ -15,13 +16,13 @@ public class Plain {
             String oldValue = Utils.stringify(diffInfo.get(1));
 
             if (diffInfo.getFirst().equals("removed")) {
-                diffResult.append("Property ").append("'").append(key).append("'")
+                diffResult.append(property).append("'").append(key).append("'")
                         .append(" was ")
                         .append(diffInfo.getFirst())
                         .append("\n");
             } else  if (diffInfo.getFirst().equals("updated")) {
                 String newValue = Utils.stringify(diffInfo.get(2));
-                diffResult.append("Property ").append("'").append(key).append("'")
+                diffResult.append(property).append("'").append(key).append("'")
                         .append(" was ")
                         .append(diffInfo.getFirst())
                         .append(". ")
@@ -31,7 +32,7 @@ public class Plain {
                         .append(newValue)
                         .append("\n");
             } else  if (diffInfo.getFirst().equals("added")) {
-                diffResult.append("Property ").append("'").append(key).append("'")
+                diffResult.append(property).append("'").append(key).append("'")
                         .append(" was added with value: ")
                         .append(oldValue)
                         .append("\n");
