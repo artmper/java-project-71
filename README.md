@@ -18,7 +18,7 @@ This project is aimed at developing a utility for determining the differences be
 3. Install the utility with the command ```make install```
 4. Run the App via ```make run f1=fileName1 f2=fileName2```
 5. To display the ```help``` menu, enter ```make run-dist```
-6. If you want to specify output format, type ```f=-f="foramt name"``` before file names. *For example, ```make run f=-f=json f1=file1.json f2=file2.json```*
+6. If you want to specify output format, type ```f=-f="format name"``` before file names. *For example, ```make run f=-f=json f1=file1.json f2=file2.json```*
 
 ### Working Example
 
