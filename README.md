@@ -3,10 +3,6 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=artmper_java-project-71&metric=coverage)](https://sonarcloud.io/summary/new_code?id=artmper_java-project-71)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=artmper_java-project-71&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=artmper_java-project-71)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=artmper_java-project-71&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=artmper_java-project-71)
-### Hexlet tests and linter status:
-
----
-
 [![Actions Status](https://github.com/artmper/java-project-71/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/artmper/java-project-71/actions)
 
 ### Description
