@@ -28,7 +28,7 @@ class UtilsTest {
         String actual4 = Utils.stringify('c');
         String actual5 = Utils.stringify(null);
 
-        assertEquals("12", actual1);
+        assertEquals("1", actual1);
         assertEquals("[complex value]", actual2);
         assertEquals("true", actual3);
         assertEquals("c", actual4);
