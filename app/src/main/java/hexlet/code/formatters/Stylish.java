@@ -5,7 +5,7 @@ import hexlet.code.Status;
 import java.util.Map;
 
 public class Stylish {
-    public static String formate(Map<String, Status> diff) {
+    public static String formate(Map<String, Status> diff) throws IllegalStateException {
         StringBuilder diffResult = new StringBuilder();
         diffResult.append("{\n");
 

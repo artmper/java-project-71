@@ -24,7 +24,7 @@ public class Differ {
         String secondFileData = Files.readString(pathToSecondFile);
 
         if ((fileExtension1.equals("yml") || fileExtension1.equals("yaml"))
-                && ((fileExtension2.equals("yml") || fileExtension2.equals("yaml")))) {
+                && (fileExtension2.equals("yml") || fileExtension2.equals("yaml"))) {
             mapper = new ObjectMapper(new YAMLFactory());
         } else if (fileExtension1.equals("json") && fileExtension2.equals("json")) {
             mapper = new ObjectMapper();

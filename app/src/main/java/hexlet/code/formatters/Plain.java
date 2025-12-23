@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Plain {
-    public static String formate(Map<String, Status> diff) {
+    public static String formate(Map<String, Status> diff) throws IllegalStateException {
         StringBuilder diffResult = new StringBuilder();
         String property = "Property ";
 

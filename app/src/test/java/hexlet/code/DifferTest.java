@@ -19,7 +19,7 @@ class DifferTest {
     private static Path pathToStylishDiff;
 
     @BeforeAll
-    public static void beforeAll() {
+    static void beforeAll() {
         pathToJson1 = getFixturePath("file1.json").toString();
         pathToJson2 = getFixturePath("file2.json").toString();
         pathToYaml1 = getFixturePath("file1.yaml").toString();
