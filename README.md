@@ -24,4 +24,4 @@ This project is aimed at developing a utility for determining the differences be
 
 ----
 
-[![asciicast](https://asciinema.org/a/kQBNFYqApqbTxwYyndx6KQI7W.svg)](https://asciinema.org/a/kQBNFYqApqbTxwYyndx6KQI7W)
+[![asciicast](https://asciinema.org/a/CZXKcRL8LxUB9K7MQxAwG3aYr.svg)](https://asciinema.org/a/CZXKcRL8LxUB9K7MQxAwG3aYr)
