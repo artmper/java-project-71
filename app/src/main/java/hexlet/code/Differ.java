@@ -1,64 +1,69 @@
 package hexlet.code;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class Differ {
 
-    public static String generate(String filepath1, String filepath2, String formatName) throws Exception {
-        Map<String, List<Object>> diff = makeDiff(filepath1, filepath2);
+    public static String generate(String filePath1, String filePath2, String formatName) throws Exception {
+        ObjectMapper mapper;
+        Path pathToFirstFile = Paths.get(filePath1).toAbsolutePath().normalize();
+        Path pathToSecondFile = Paths.get(filePath2).toAbsolutePath().normalize();
 
-        return Formatter.formateDiff(diff, formatName);
+        String fileExtension1 = getFileExtension(pathToFirstFile);
+        String fileExtension2 = getFileExtension(pathToSecondFile);
 
-    }
+        String firstFileData = Files.readString(pathToFirstFile);
+        String secondFileData = Files.readString(pathToSecondFile);
 
-    public static String generate(String filepath1, String filepath2) throws Exception {
-        Map<String, List<Object>> diff = makeDiff(filepath1, filepath2);
-
-        return Formatter.formateDiff(diff, "stylish");
-
-    }
-
-    public static Map<String, List<Object>> makeDiff(String filepath1, String filepath2) throws IOException {
-        Map<String, Object> firstFileData = Parser.getData(filepath1);
-        Map<String, Object> secondFileData = Parser.getData(filepath2);
-
-        Map<String, Object> mergedMap = new HashMap<>(firstFileData);
-        mergedMap.putAll(secondFileData);
-        Map<String, Object> sortedMap = Utils.sort(mergedMap);
-        Map<String, List<Object>> diff = new LinkedHashMap<>();
-
-        for (var entry : sortedMap.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            List<Object> diffInfo = new ArrayList<>();
-
-            if (!secondFileData.containsKey(key)) {
-                diffInfo.add("removed");
-                diffInfo.add(value);
-                diff.put(key, diffInfo);
-            } else if (firstFileData.containsKey(key)) {
-                value = entry.getValue() == null ? "null" : entry.getValue();
-                Object firstFileValue = firstFileData.get(key) == null ? "null" : firstFileData.get(key);
-                if (firstFileValue.equals(value)) {
-                    diffInfo.add("unchanged");
-                } else {
-                    diffInfo.add("updated");
-                    diffInfo.add(firstFileData.get(key));
-                }
-                diffInfo.add(entry.getValue());
-                diff.put(key, diffInfo);
-            } else {
-                diffInfo.add("added");
-                diffInfo.add(entry.getValue());
-                diff.put(key, diffInfo);
-            }
+        if ((fileExtension1.equals("yml") || fileExtension1.equals("yaml"))
+                && ((fileExtension2.equals("yml") || fileExtension2.equals("yaml")))) {
+            mapper = new ObjectMapper(new YAMLFactory());
+        } else if (fileExtension1.equals("json") && fileExtension2.equals("json")) {
+            mapper = new ObjectMapper();
+        } else {
+            throw new IllegalArgumentException("Files extensions doesn't match, or not suitable: "
+                    + fileExtension1 + " " + fileExtension2);
         }
 
-        return diff;
+        Map<String, Object> map1 = Parser.parse(firstFileData, mapper);
+        Map<String, Object> map2 = Parser.parse(secondFileData, mapper);
+
+        Map<String, Status> diff = DiffMaker.makeDiff(map1, map2);
+        String formattedDiff = Formatter.formateDiff(diff, formatName);
+
+        System.out.println(formattedDiff);
+
+        return formattedDiff;
+    }
+
+    public static String generate(String filePath1, String filePath2) throws Exception {
+        return generate(filePath1, filePath2, "stylish");
+    }
+
+    public static String getFileExtension(Path filePath) throws IOException {
+        String fileExtension;
+
+        if (!Files.exists(filePath)) {
+            throw new IOException("File '" + filePath + "' does not exist");
+        }
+
+        String fileName = filePath.getFileName().toString();
+        int dotIndex = fileName.lastIndexOf('.');
+
+        if (dotIndex == -1) {
+            throw new NoSuchElementException("The specified file does not have an extension.");
+        } else {
+            fileExtension = fileName.substring(dotIndex + 1);
+        }
+
+        return fileExtension;
     }
 }

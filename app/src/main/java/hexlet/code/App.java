@@ -23,16 +23,8 @@ public final class App implements Callable<Integer> {
     private String format;
 
     @Override
-    public Integer call() {
-        try {
-            if (!format.equals("stylish")) {
-                System.out.println(Differ.generate(filepath1, filepath2, format));
-            } else {
-                System.out.println(Differ.generate(filepath1, filepath2));
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public Integer call() throws Exception {
+        Differ.generate(filepath1, filepath2, format);
 
         return 0;
     }

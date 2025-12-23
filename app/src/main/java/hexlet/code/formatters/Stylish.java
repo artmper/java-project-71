@@ -1,38 +1,41 @@
 package hexlet.code.formatters;
 
-import java.util.List;
+import hexlet.code.Status;
+
 import java.util.Map;
 
 public class Stylish {
-    public static String formate(Map<String, List<Object>> diff) {
+    public static String formate(Map<String, Status> diff) {
         StringBuilder diffResult = new StringBuilder();
         diffResult.append("{\n");
 
         for (var entry : diff.entrySet()) {
+            Status diffInfo = entry.getValue();
             String key = entry.getKey();
-            List<Object> diffInfo = entry.getValue();
-            String oldValue = diffInfo.get(1) == null ? "null" : diffInfo.get(1).toString();
 
-            if (diffInfo.getFirst().equals("removed")) {
-                diffResult.append("  ").append("- ").append(key).append(": ")
+            String statusName = diffInfo.getStatusName();
+            String oldValue = diffInfo.getOldValue() == null ? "null" : diffInfo.getOldValue().toString();
+            String newValue = diffInfo.getNewValue() == null ? "null" : diffInfo.getNewValue().toString();
+
+            switch (statusName) {
+                case Status.DELETED -> diffResult.append("  ").append("- ").append(key).append(": ")
                         .append(oldValue)
                         .append("\n");
-            } else if (diffInfo.getFirst().equals("unchanged")) {
-                diffResult.append("    ").append(key).append(": ")
+                case Status.UNCHANGED -> diffResult.append("    ").append(key).append(": ")
                         .append(oldValue)
                         .append("\n");
-            } else  if (diffInfo.getFirst().equals("updated")) {
-                String newValue = diffInfo.get(2) == null ? "null" : diffInfo.get(2).toString();
-                diffResult.append("  ").append("- ").append(key).append(": ")
-                        .append(oldValue)
-                        .append("\n");
-                diffResult.append("  ").append("+ ").append(key).append(": ")
+                case Status.UPDATED -> {
+                    diffResult.append("  ").append("- ").append(key).append(": ")
+                            .append(oldValue)
+                            .append("\n");
+                    diffResult.append("  ").append("+ ").append(key).append(": ")
+                            .append(newValue)
+                            .append("\n");
+                }
+                case Status.ADDED -> diffResult.append("  ").append("+ ").append(key).append(": ")
                         .append(newValue)
                         .append("\n");
-            } else {
-                diffResult.append("  ").append("+ ").append(key).append(": ")
-                        .append(oldValue)
-                        .append("\n");
+                default -> throw new IllegalStateException("Unknown status name: " + statusName);
             }
         }
         diffResult.append("}");
