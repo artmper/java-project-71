@@ -1,19 +1,16 @@
 package hexlet.code;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class Differ {
 
     public static String generate(String filePath1, String filePath2, String formatName) throws Exception {
-        ObjectMapper mapper;
         Path pathToFirstFile = Paths.get(filePath1).toAbsolutePath().normalize();
         Path pathToSecondFile = Paths.get(filePath2).toAbsolutePath().normalize();
 
@@ -23,18 +20,8 @@ public class Differ {
         String firstFileData = Files.readString(pathToFirstFile);
         String secondFileData = Files.readString(pathToSecondFile);
 
-        if ((fileExtension1.equals("yml") || fileExtension1.equals("yaml"))
-                && (fileExtension2.equals("yml") || fileExtension2.equals("yaml"))) {
-            mapper = new ObjectMapper(new YAMLFactory());
-        } else if (fileExtension1.equals("json") && fileExtension2.equals("json")) {
-            mapper = new ObjectMapper();
-        } else {
-            throw new IllegalArgumentException("Files extensions doesn't match, or not suitable: "
-                    + fileExtension1 + " " + fileExtension2);
-        }
-
-        Map<String, Object> map1 = Parser.parse(firstFileData, mapper);
-        Map<String, Object> map2 = Parser.parse(secondFileData, mapper);
+        Map<String, Object> map1 = Parser.parse(firstFileData, fileExtension1);
+        Map<String, Object> map2 = Parser.parse(secondFileData, fileExtension2);
 
         Map<String, Status> diff = DiffMaker.makeDiff(map1, map2);
         String formattedDiff = Formatter.formateDiff(diff, formatName);
@@ -59,7 +46,7 @@ public class Differ {
         int dotIndex = fileName.lastIndexOf('.');
 
         if (dotIndex == -1) {
-            throw new NoSuchElementException("The specified file does not have an extension.");
+            throw new NoSuchElementException("The specified file does not have an extension: " + fileName);
         } else {
             fileExtension = fileName.substring(dotIndex + 1);
         }

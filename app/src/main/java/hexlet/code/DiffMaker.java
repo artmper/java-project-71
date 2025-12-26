@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-
 public class DiffMaker {
     public static Map<String, Status> makeDiff(Map<String, Object> map1, Map<String, Object> map2) {
         Set<String> set = new TreeSet<>(map1.keySet());

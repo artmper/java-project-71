@@ -7,7 +7,6 @@ import picocli.CommandLine.Option;
 
 import java.util.concurrent.Callable;
 
-
 @Command(name = "gendiff", mixinStandardHelpOptions = true, version = "App v1.0",
          description = "Compares two configuration files and shows a difference.")
 public final class App implements Callable<Integer> {
